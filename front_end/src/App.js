@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {Button} from 'antd';
+import { browserHistory } from 'react-router';
+
 
 class App extends Component {
   render() {
@@ -14,7 +16,9 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-        <Button type="primary">Submit</Button>
+        <Button type="primary" onClick={() => {
+          browserHistory.push("/user/213");
+        }}>Submit</Button>
       </div>
     );
   }
