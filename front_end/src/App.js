@@ -17,8 +17,8 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <Button type="primary" onClick={() => {
-          browserHistory.push("/user/213");
-        }}>Submit</Button>
+          browserHistory.push("/main");
+        }}>跳转</Button>
       </div>
     );
   }

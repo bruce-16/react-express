@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
-import {Router, Route, browserHistory} from 'react-router';
+import {Router, Route, browserHistory, IndexRoute} from 'react-router';
 
 import App from './App';
 import NotFound from './routers/NotFound';
@@ -17,7 +17,7 @@ const Routers = () => (
     <Route path="/" component={App}/>
     
     <Route path="/main" component={Main}>
-      <Route path="home" component={Home}/>
+      <IndexRoute component={Home}/>
     </Route>
 
     <Route path="/user/:id" component={User}/> 
