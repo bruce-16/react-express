@@ -2,28 +2,42 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
-import {Router, Route, browserHistory, IndexRoute} from 'react-router';
-
-import App from './App';
-import NotFound from './routers/NotFound';
-import User from './routers/User';
-
-import Main from './routers/main';
-import Home from './routers/Home';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom';
 
 
-const Routers = () => (
-  <Router history={browserHistory}>
-    <Route path="/" component={App}/>
-    
-    <Route path="/main" component={Main}>
-      <IndexRoute component={Home}/>
-    </Route>
 
-    <Route path="/user/:id" component={User}/> 
-    <Route path="*" component={NotFound} />
+// import App from './App'
+import NotFound from './containers/NotFound';
+import Main from './containers/Show/Main';
+import User from './containers/User/Main';
+import Edit from './containers/Edit/Main';
+import Login from './containers/Login/Main';
+
+const Index = () => (
+  <Router>
+      <Switch>
+        {/*主页，显示发表的内容  */}
+        {/* <Route path="/"  component={(props) => (
+          <Main {...props}>
+            <Switch>
+              <Route path={`/login`} component={Login}/>
+            </Switch>
+          </Main>
+        )}/>  */}
+        <Route path="/" component={Main}/>  
+        {/*用户页： 注册，登录，个人详情  */}
+        <Route path="/user" component={User}/>
+        {/*发表文章  */}
+        <Route path="/edit" component={Edit}/>
+        {/*错误页面  */}
+        <Route component={NotFound}/>
+      </Switch>
   </Router>
 );
 
-ReactDOM.render(<Routers />, document.getElementById('root'));
+ReactDOM.render(<Index />, document.getElementById('root'));
 registerServiceWorker();

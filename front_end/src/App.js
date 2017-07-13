@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {Button} from 'antd';
-import { browserHistory } from 'react-router';
+
 
 
 class App extends Component {
@@ -17,7 +17,7 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <Button type="primary" onClick={() => {
-          browserHistory.push("/main");
+          
         }}>跳转</Button>
       </div>
     );
