@@ -1,19 +1,34 @@
 import React, { Component } from 'react';
-import {Row, Col, Button, Form, Input, Icon, Checkbox} from 'antd';
+import {Row, Col, Button, Form, Input, Icon, Checkbox, message} from 'antd';
 import PropTypes from 'prop-types';
+import {userLogin} from '../../server/login';
 
 const FormItem = Form.Item;
 
 class Login extends Component {
 
   static propTypes = {
-    onInOrUp: PropTypes.func.isRequired
+    onInOrUp: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired
   }
 
   handleRegClick = e => {
     e.preventDefault();
     let { onInOrUp } = this.props;
     onInOrUp();
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFields((error, values) => {
+      if(error) return;
+      userLogin(values, rst => {
+        message.success('登陆成功!', 2);
+        setTimeout(() => {
+          this.props.onSubmit();
+        }, 2000);
+      });
+    });
   }
 
   render(){
@@ -30,7 +45,7 @@ class Login extends Component {
               )}
             </FormItem>
             <FormItem>
-              {getFieldDecorator('password', {
+              {getFieldDecorator('pwd', {
                 rules: [{ required: true, message: 'Please input your Password!' }],
               })(
                 <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />

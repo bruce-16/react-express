@@ -47,7 +47,7 @@ export const fetchPost = async (url, values) => {
 export const fetchGet = async url => {
   let result = await GET(url);
   if(result.status && result.status > 0){
-    let msg = result.msg || '获取信息失败';
+    let msg = result.msg || '发送信息失败';
     message.error(msg, 2);
   }else{
     return result;

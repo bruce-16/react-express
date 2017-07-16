@@ -25,9 +25,20 @@ class LoginMain extends Component {
     this.setState({InOrUp: !this.state.InOrUp})
   }
 
-  render(){
-    return this.state.InOrUp ? <Login onInOrUp={this.onInOrUp}/> : <Register onInOrUp={this.onInOrUp}/>;
+  handleSuccess = () => {
+    this.props.history.goBack();
+  }
 
+  render(){
+    return (
+      this.state.InOrUp 
+      ? <Login 
+          onInOrUp={this.onInOrUp}
+          onSubmit={this.handleSuccess}
+        /> 
+      : <Register 
+          onInOrUp={this.onInOrUp}
+        />);
   }
 }
 

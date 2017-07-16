@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Button, Form, Input, Icon, Select} from 'antd';
+import {Row, Col, Button, Form, Input, Icon, Select, message} from 'antd';
 import PropTypes from 'prop-types';
 import {registerUser} from '../../server/login';
 
@@ -41,7 +41,10 @@ class Register extends Component {
     this.props.form.validateFields((error, values) => {
       if(error) return;
       registerUser(values, rst => {
-        console.log(rst);
+        message.success('注册成功', 2);
+        setTimeout( () => {
+          this.props.onInOrUp();
+        }, 2000);
       });
     });
   }
