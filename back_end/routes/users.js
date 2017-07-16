@@ -14,6 +14,21 @@ const getUsers = (req, res, next) => {
   })
 };
 
+const registerUser = (req, res, next) => {
+  let body = req.body;
+  let user = new User({
+    name: body.userName,
+    pwd: body.pwd
+  });
+  user.save( err => {
+    if( err ) next(err);
+    res.json({
+      status: 0
+    });
+  });
+}
+
 router.get('/', getUsers);
+router.post('/user', registerUser);
 
 module.exports = router;

@@ -1,7 +1,6 @@
 //返回mongoose连接实例
 var mongoose = require('mongoose');
 var cfg = require('./mongodb');
-console.log(cfg.mongodbUrl);
 mongoose.connect(cfg.mongodbUrl, {useMongoClient: true});
 
 //链接成功的监听
