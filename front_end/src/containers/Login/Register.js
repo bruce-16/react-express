@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import {Row, Col, Button, Form, Input, Icon, Select} from 'antd';
 import PropTypes from 'prop-types';
+import {registerUser} from '../../server/login';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class Register extends Component {
   static propTypes = {
-    onInOrUp: PropTypes.func.isRequire
+    onInOrUp: PropTypes.func.isRequired
   }
 
   checkPassword = (rule, value, callback) => {
     const form = this.props.form;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('两次输入的密码不想同，请重新输入。');
+    if (value && value !== form.getFieldValue('pwd')) {
+      callback('两次输入的密码不相同，请重新输入。');
     } else {
       //不管结果怎么样都需要返回callback
       callback();
@@ -33,6 +34,16 @@ class Register extends Component {
     e.preventDefault();
     let { onInOrUp } = this.props;
     onInOrUp();
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFields((error, values) => {
+      if(error) return;
+      registerUser(values, rst => {
+        console.log(rst);
+      });
+    });
   }
 
   render(){
@@ -64,7 +75,7 @@ class Register extends Component {
               label="电话号码"
               hasFeedback
             >
-              {getFieldDecorator('phone', {
+              {getFieldDecorator('userName', {
                 rules: [{ 
                   required: true, message: '请输入你的电话号码' 
                 },{
@@ -79,7 +90,7 @@ class Register extends Component {
               label="密码"
               hasFeedback
             >
-              {getFieldDecorator('password', {
+              {getFieldDecorator('pwd', {
                 rules: [{ required: true, message: '请输入你的密码' }],
               })(
                 <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
