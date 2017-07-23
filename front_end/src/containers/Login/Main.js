@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import {Layout} from 'antd';
 import Login from './Login';
 import Register from './Register';
-
+import PropTypes from 'prop-types';
 
 const { Content } = Layout;
+
 const styles = {
   content: {
     height: '100%', 
@@ -14,6 +15,10 @@ const styles = {
 };
 
 class LoginMain extends Component {
+  static contextTypes = {
+    changeLogined: PropTypes.func
+  }
+
   constructor(props){
     super(props);
     this.state = {
@@ -27,6 +32,7 @@ class LoginMain extends Component {
 
   handleSuccess = () => {
     this.props.history.goBack();
+    this.context.changeLogined();
   }
 
   render(){

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Layout, Row, Col, Button } from 'antd';
-import Login from '../Login/Main';
+import PropTypes from 'prop-types';
 import {Route, Switch} from 'react-router-dom';
+
+import Login from '../Login/Main';
+import Writing from '../Writing/index';
 
 const {Header, Content, Footer} = Layout;
 
@@ -13,7 +16,8 @@ const styles = {
   },
   headerCenter: {
     fontSize: 40,
-    color: '#FFF'
+    color: '#FFF',
+    cursor: 'pointer'
   },
   headerLeft: {
     fontSize: 25,
@@ -21,9 +25,10 @@ const styles = {
   },
   content: {
     height: '100%', 
-    padding: '0 50px', 
+    padding: '10px 50px', 
     background: 'white', 
     marginTop: 64,
+    overflow: 'auto'
   },
   footer: {
     width: '100%',
@@ -32,6 +37,10 @@ const styles = {
 }
 
 class Main extends Component {
+  static childContextTypes = {
+    changeLogined: PropTypes.func
+  }
+
   constructor(props){
     super(props)
     this.state = {
@@ -39,11 +48,35 @@ class Main extends Component {
     }
   }
 
-  handleCilck = e => {
+  // 将改变登陆状态的函数，以上下文的形式传入子组件
+  getChildContext = () => {
+    return {
+      changeLogined: this.changeLogined
+    }
+  }
+  changeLogined = () => {
+    this.setState({logined: !this.state.logined});
+  }
+
+  handleUserCilck = e => {
     e.preventDefault()
     // 做一些路由的跳转
     let {history} = this.props;
     history.push(`/login`);
+  }
+  
+  handleWriteCilck = (e) => {
+    e.preventDefault();
+    // 做一些路由的跳转
+    let {history} = this.props;
+    history.push('/writing');
+  }
+
+  backMain = (e) => {
+    e.preventDefault();
+    // 做一些路由的跳转
+    let {history} = this.props;
+    history.push('/');
   }
 
   render() {
@@ -52,17 +85,21 @@ class Main extends Component {
         <Header style={styles.header}>
           <Row type="flex" justify="center">
             <Col span={4}>
-              <Button shape="circle" size="large" ghost onClick={this.handleCilck} icon="user"/>
+              <Button shape="circle" size="large" ghost onClick={this.handleUserCilck} icon="user"/>
             </Col>
-            <Col span={16} style={styles.headerCenter}>
+            <Col span={16} style={styles.headerCenter} onClick={this.backMain}>
               <Row type="flex" justify="center">
                 <Col >微博</Col>
               </Row>
             </Col>
             <Col span={4}>
-            {
-              this.state.logined ? ('用户图像等') : ''
-            }
+              <Row type="flex" justify="end" align="middle" style={{height: '100%'}}>
+                {
+                  this.state.logined 
+                  ? <Button shape="circle" size="large" ghost onClick={this.handleWriteCilck} icon="edit"/>
+                  : ''
+                }
+              </Row>
             </Col>
           </Row>
         </Header>
@@ -71,6 +108,7 @@ class Main extends Component {
             /*子路由*/
             <Switch>
               <Route path="/login" component={Login}/>
+              <Route path="/writing" component={Writing}/>
             </Switch>
           }
         </Content>
