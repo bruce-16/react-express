@@ -25,7 +25,7 @@ class Login extends Component {
       userLogin(values, rst => {
         message.success('登陆成功!', 2);
         setTimeout(() => {
-          this.props.onSubmit();
+          this.props.onSubmit(rst.data);
         }, 2000);
       });
     });
