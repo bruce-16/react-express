@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import {Layout} from 'antd';
+// import {Layout} from 'antd';
 import Login from './Login';
 import Register from './Register';
 import PropTypes from 'prop-types';
 
-const { Content } = Layout;
+import {USER, setItem} from '../../utils/localStorage';
+// const { Content } = Layout;
 
-const styles = {
-  content: {
-    height: '100%', 
-    padding: '0 50px', 
-    background: 'white', 
-  }
-};
+// const styles = {
+//   content: {
+//     height: '100%', 
+//     padding: '0 50px', 
+//     background: 'white', 
+//   }
+// };
 
 class LoginMain extends Component {
   static contextTypes = {
@@ -30,7 +31,9 @@ class LoginMain extends Component {
     this.setState({InOrUp: !this.state.InOrUp})
   }
 
-  handleSuccess = () => {
+  handleSuccess = (rst) => {
+    // 存储用户的信息
+    setItem(USER, JSON.stringify(rst));
     this.props.history.goBack();
     this.context.changeLogined();
   }
