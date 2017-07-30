@@ -6,7 +6,7 @@ const User = require('../schemas/User');
 /* GET users listing. */
 const getUsers = (req, res, next) => {
   User.find((err, rst) => {
-    if(err) next(err);
+    if(err) return next(err);
     res.json({
       status: 0,
       data: rst
@@ -32,7 +32,7 @@ const registerUser = (req, res, next) => {
         pwd: body.pwd
       });
       user.save( err => {
-        if( err ) next(err);
+        if( err ) return next(err);
         res.json({
           status: 0
         });
@@ -47,8 +47,12 @@ const userLogin = (req, res, next) => {
     if(err) next(err);
     //查询结果返回一个数组，如果无数据则返回空数组
     if(rst.length) {
+      let returnRst = rst[0]; // 得到一个model类型的数据
+      delete returnRst._doc['pwd'];  // 删除用户密码，不返回给前端
+      console.log('login return ', returnRst);
       res.json({
-        status: 0
+        status: 0,
+        data: returnRst
       });
     }else{
       res.json({

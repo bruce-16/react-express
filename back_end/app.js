@@ -8,6 +8,7 @@ const app = express();
 
 const index = require('./routes/index');
 const users = require('./routes/users');
+const records = require('./routes/records');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //router
 app.use('/', index); //主页渲染前端页面
 app.use('/api/users', users);
+app.use('/api/records', records);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
