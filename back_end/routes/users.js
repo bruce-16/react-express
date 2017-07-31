@@ -43,24 +43,34 @@ const registerUser = (req, res, next) => {
 
 const userLogin = (req, res, next) => {
   let body = req.body;
-  User.find({name: body.userName, pwd: body.pwd}, (err, rst) => {
-    if(err) next(err);
-    //查询结果返回一个数组，如果无数据则返回空数组
-    if(rst.length) {
-      let returnRst = rst[0]; // 得到一个model类型的数据
-      delete returnRst._doc['pwd'];  // 删除用户密码，不返回给前端
-      console.log('login return ', returnRst);
-      res.json({
-        status: 0,
-        data: returnRst
-      });
-    }else{
-      res.json({
-        status: 1,
-        msg: '用户名不存在或密码错误'
-      });
-    }
-  })
+  // 如果包含user cookie
+  if (req.session.user){
+    // 直接返回成功信息。
+    res.json({
+      status: 0
+    });
+  } else {
+    User.find({name: body.userName, pwd: body.pwd}, (err, rst) => {
+      if(err) next(err);
+      //查询结果返回一个数组，如果无数据则返回空数组
+      if(rst.length) {
+        let returnRst = rst[0]; // 得到一个model类型的数据
+        delete returnRst._doc['pwd'];  // 删除用户密码，不返回给前端
+        // 设置session
+        req.session.user = returnRst._doc;
+        // 返回数据
+        res.json({
+          status: 0,
+          data: returnRst
+        });
+      }else{
+        res.json({
+          status: 1,
+          msg: '用户名不存在或密码错误'
+        });
+      }
+    });
+  }
 }
 
 router.get('/', getUsers);

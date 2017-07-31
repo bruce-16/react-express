@@ -4,6 +4,7 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const session = require('express-session')
 const app = express();
 
 const index = require('./routes/index');
@@ -20,6 +21,17 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+//session
+app.use(cookieParser('expressSession'));
+app.use(session({
+  secret: 'expressSession', // 与cookieParser中的一致
+  resave: true,
+  saveUninitialized:true,
+  cookie: {
+    maxAge: 8000
+  }
+}));
+// public floder
 app.use(express.static(path.join(__dirname, 'public')));
 
 //router
