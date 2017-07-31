@@ -28,7 +28,7 @@ app.use(session({
   resave: true,
   saveUninitialized:true,
   cookie: {
-    maxAge: 8000
+    maxAge: 1000 * 60 * 60 * 24 * 7
   }
 }));
 // public floder

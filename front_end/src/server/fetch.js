@@ -5,6 +5,7 @@ const GET = async url => {
   console.log(`[GET URL: ${url} ]`);
   try {
     let rst = await fetch(url, {
+      credentials: 'include', // 携带 cookie
       //get参数
     });
     let json = await rst.json();
@@ -20,6 +21,7 @@ const POST = async (url, body) => {
   try {
     let rst = await fetch(url, {
       //post参数
+      credentials: 'include', // 携带 cookie
       method: 'POST',
       headers: {
         "Content-Type": "Application/json"
@@ -36,9 +38,9 @@ const POST = async (url, body) => {
 
 export const fetchPost = async (url, values) => {
   let result = await POST(url, values);
-  if(!result.status && result.status > 0){
+  if(result.status && result.status > 0){
     let msg = result.msg || '提交信息失败';
-    message.error(msg, 2);
+    console.log(msg, 2);
   }else{
     return result;
   }
@@ -48,7 +50,7 @@ export const fetchGet = async url => {
   let result = await GET(url);
   if(result.status && result.status > 0){
     let msg = result.msg || '发送信息失败';
-    message.error(msg, 2);
+    console.log(msg, 2);
   }else{
     return result;
   }
