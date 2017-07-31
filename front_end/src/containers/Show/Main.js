@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Layout, Row, Col, Button } from 'antd';
 import PropTypes from 'prop-types';
 import {Route, Switch} from 'react-router-dom';
-
+import {USER, setItem} from '../../utils/localStorage';
+import {userLogin} from '../../server/login';
 import Login from '../Login/Main';
 import Writing from '../Writing/index';
 
@@ -48,6 +49,19 @@ class Main extends Component {
     }
   }
 
+  componentDidMount(){
+    userLogin({}, (rst) => {
+      // session已经过期，登录状态为空
+      console.log('login rst', rst);
+      if(rst.status !== 0){
+        setItem(USER, null);
+        this.setState({logined: false});
+      } else {
+        this.setState({logined: true});
+      }
+    });
+  }
+
   // 将改变登陆状态的函数，以上下文的形式传入子组件
   getChildContext = () => {
     return {
@@ -78,7 +92,7 @@ class Main extends Component {
     let {history} = this.props;
     history.push('/');
   }
-
+  
   render() {
     return (
       <Layout className="layout" style={{height: '100%'}}>
